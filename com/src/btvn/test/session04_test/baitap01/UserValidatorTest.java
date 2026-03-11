@@ -1,0 +1,35 @@
+package btvn.test.session04_test.baitap01;
+
+import btvn.session04.baitap01.UserValidator;
+
+public class UserValidatorTest {
+    @Test
+    void TC01_validUsername() {
+
+        String username = "user123";
+
+        boolean result = UserValidator.isValidUsername(username);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void TC02_usernameTooShort() {
+
+        String username = "abc";
+
+        boolean result = UserValidator.isValidUsername(username);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void TC03_usernameContainSpace() {
+
+        String username = "user name";
+
+        boolean result = UserValidator.isValidUsername(username);
+
+        assertFalse(result);
+    }
+}
