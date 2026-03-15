@@ -1,5 +1,10 @@
 package btvn.test.session04_test.baitap04;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import org.junit.Test;
+
 import btvn.session04.baitap04.PasswordService;
 
 public class PasswordServiceTest {

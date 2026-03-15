@@ -1,8 +1,14 @@
 package btvn.test.session04_test.baitap06;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
 
 import btvn.session04.baitap06.User;
 import btvn.session04.baitap06.UserProfile;

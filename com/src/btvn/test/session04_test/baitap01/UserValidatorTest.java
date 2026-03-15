@@ -1,6 +1,8 @@
 package btvn.test.session04_test.baitap01;
 
 import btvn.session04.baitap01.UserValidator;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserValidatorTest {
     @Test
