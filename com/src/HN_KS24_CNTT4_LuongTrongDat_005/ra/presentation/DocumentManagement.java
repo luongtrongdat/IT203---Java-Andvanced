@@ -1,24 +1,85 @@
-// Thư viện trung tâm của một trường đại học cần só hóa kho tài liệu nhưng phần mềm cũ không đáp ứng được
-// tốc độ xử lý. Họ cần một hệ thống mới để quản lý thông tin các tài liệu số, tra cứu tài liệu nhanh chóng,
-// lọc ra các tài liệu được sinh viên tải về nhiều nhất để ưu tiên băng thông, và đảm bảo k có mã tài liệu nào
-// bị nhập trùng. Hãy viết chương trình java để thực hiện các yêu cầu kiến trúc sau:\
-// 1. Xây dựng các lớp sau(Package: ra.entity):
-// - Xây dựng lớp Document gồm:
-// + Các thuộc tính:
-//    documentId (String): mã tài liệu không được trùng lặp
-//    documentName (String): tên tài liệu
-//    fileSize (double): Dung lượng file (MB) phải lớn hơn 0
-//    download (int): Lượt tải xuống phải lớn hơn hoặc bằng 0
-// + Gồm 2 constructor: không tham số và đầy đủ các tham số
-// + Gồm phương thức getter/setter
-// + Phương thức InputData() hiện thị thông tin tài liệu ra màn hình với định dạng bảng rõ ràng
-// 2. Xây dựng lớp nghiệp vụ sau (Package: ra.business):
-// - Tạo một lớp DocumentBusiness quản lý một danh sách List<Document> đối tượng DocumentBusiness
-// chỉ được tồn tại duy nhất 1 lần (áp dụng Design Pattern). Xây dựng các phương thức xử lý logic dưới đây.
-// Bắt buộc sử dụng Java8 (Stream API, Lambda, Optional) cho các thao tác:
-
 package HN_KS24_CNTT4_LuongTrongDat_005.ra.presentation;
 
+import HN_KS24_CNTT4_LuongTrongDat_005.ra.business.DocumentBusiness;
+import HN_KS24_CNTT4_LuongTrongDat_005.ra.entity.Document;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
 public class DocumentManagement {
-    
+    private static final DocumentBusiness documentBusiness = DocumentBusiness.getInstance();
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        documentBusiness.addDocument(new Document("D001", "Java5", 15, 100));
+        documentBusiness.addDocument(new Document("D002", "Java8", 8, 950));
+        documentBusiness.addDocument(new Document("D003", "Database", 25, 500));
+        documentBusiness.addDocument(new Document("D004", "Web ", 12, 800));
+
+
+        do {
+            System.out.println("\n========== DOCUMENT MANAGEMENT ==========");
+            System.out.println("1. Hien thi danh sach tai lieu");
+            System.out.println("2. Them moi tai lieu");
+            System.out.println("3. Cap nhat thong tin tai lieu");
+            System.out.println("4. Xoa tai lieu");
+            System.out.println("5. Tim kiem tai lieu theo ten");
+            System.out.println("6. Sap xep tai lieu theo luot tai giam dan");
+            System.out.println("7. Loc tai lieu co luot tai >= 1000");
+            System.out.println("8. Thoat");
+            System.out.print("Lua chon cua ban: ");
+
+            String inputChoice = scanner.nextLine();
+            if (inputChoice.matches("\\d+")) {
+                int choice = Integer.parseInt(inputChoice);
+                switch (choice) {
+                    case 1:
+                        documentBusiness.listDocument();
+                        break;
+                    case 2:
+                        System.out.println("Nhap thong tin cho tai lieu moi:");
+                        Document newDoc = new Document();
+                        newDoc.InputData(scanner);
+                        if (documentBusiness.addDocument(newDoc)) {
+                            System.out.println("Them moi tai lieu thanh cong.");
+                        } else {
+                            System.err.println("Loi: Ma tai lieu da ton tai.");
+                        }
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        System.out.print("Nhap ma tai lieu can xoa: ");
+                        String deleteId = scanner.nextLine();
+                        if (documentBusiness.deleteDocument(deleteId)) {
+                            System.out.println("Xoa tai lieu thanh cong.");
+                        } else {
+                            System.err.println("Loi: Khong tim thay tai lieu voi ma da nhap, xoa that bai.");
+                        }
+                        break;
+                    case 5:
+                        System.out.print("Nhap ten tai lieu can tim: ");
+                        String searchTerm = scanner.nextLine();
+                        List<Document> foundDocuments = documentBusiness.searchByName(searchTerm);
+                        System.out.println("Tim thay " + foundDocuments.size() + " tai lieu:");
+                        documentBusiness.showDocumentTable(foundDocuments);
+                        break;
+                    case 6:
+                        System.out.println("---------- DANH SACH SAU KHI SAP XEP ----------");
+                        documentBusiness.showDocumentTable(documentBusiness.sort());
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        System.out.println("Thoat chuong trinh");
+                        break;
+                    default:
+                        System.err.println("Lua chon khong hop le");
+                }
+            } else {
+                System.err.println("Vui long nhap mot so nguyen");
+            }
+        } while (true);
+    }
 }
